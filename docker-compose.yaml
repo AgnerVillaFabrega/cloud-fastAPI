@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  fastapi:
+    image: image-fastapi
+    build: .
+    container_name: fastapi-aplication
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/code

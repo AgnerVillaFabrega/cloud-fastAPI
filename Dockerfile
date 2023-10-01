@@ -1,17 +1,18 @@
-# 
-FROM python:3.9
+FROM python:3.11-slim
 
-# 
+ENV PIP_SISABLE_PIP_VERSION_CHACK=1
+ENV PYTHONBUFFERED=1
+
 WORKDIR /code
 
-# 
-COPY ./requirements.txt /code/requirements.txt
+COPY requirements.txt .
+RUN python -m venv venv
 
-# 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN /bin/bash -c "source venv/bin/activate"
+RUN pip install -r requirements.txt
 
-# 
 COPY ./app /code/app
 
-# 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 80
+
+CMD [ "uvicorn","app.main:app","--reload","--host","0.0.0.0","--port","80" ]
