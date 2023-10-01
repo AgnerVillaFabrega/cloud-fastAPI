@@ -1,0 +1,16 @@
+#Install FastApi and uvicorn
+pip install fastapi
+pip install "uvicorn[standard]"
+
+#Before create a requirements file 
+pip install -r requirements.txt
+
+#Create the image from docker
+docker build -t myimage .
+
+#Create the container with the image from docker
+docker run -d --name mycontainer -p 80:80 myimage
+
+#run uvicorp 
+sudo uvicorn main:app --reload
+sudo uvicorn app.main:app --reload
