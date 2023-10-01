@@ -14,3 +14,8 @@ docker run -d --name mycontainer -p 80:80 myimage
 #run uvicorp 
 sudo uvicorn main:app --reload
 sudo uvicorn app.main:app --reload
+
+
+GUIDE FOR START:
+    docker-compose build
+    docker-compose up

@@ -3,6 +3,8 @@ FROM python:3.11-slim
 ENV PIP_SISABLE_PIP_VERSION_CHACK=1
 ENV PYTHONBUFFERED=1
 
+RUN apt-get update && apt-get install -y libmagic1
+
 WORKDIR /code
 
 COPY requirements.txt .
