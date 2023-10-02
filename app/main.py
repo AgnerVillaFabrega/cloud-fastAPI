@@ -1,13 +1,11 @@
 from fastapi import FastAPI, File, Response, UploadFile, HTTPException
-import boto3
+from fastapi.responses import FileResponse, StreamingResponse
 from botocore.exceptions import NoCredentialsError
 from uuid import uuid4
-
-from fastapi.responses import FileResponse, StreamingResponse
+import boto3
 
 app = FastAPI()
 
-#* Configuracion de las credenciales de AWS
 aws_access_key_id = 'AKIAWWSPTKUX*'
 aws_secret_access_key = 'zoNgf/L*yAzArnOh'
 aws_bucket_name = 'unicesar-a202302'
@@ -25,8 +23,8 @@ async def upload_file(file: UploadFile = File(...)):
         file_name = f'{uuid4()}.{file_extension}'
 
         s3.upload_fileobj(file.file, aws_bucket_name, file_name)
-
         return {'message': 'Archivo subido exitosamente', 'file_name': file_name}
+        
     except NoCredentialsError:
         raise HTTPException(
             status_code=500,
@@ -38,13 +36,11 @@ async def upload_file(file: UploadFile = File(...)):
             detail=f'Error al subir el archivo: {str(e)}'
         )
 
-
 @app.get("/list_files")
 async def list_files():
     try:
         response = s3.list_objects_v2(Bucket=aws_bucket_name)
         files = [obj['Key'] for obj in response.get('Contents', [])]
-
         return {"files": files}
     except Exception as e:
         raise HTTPException(
